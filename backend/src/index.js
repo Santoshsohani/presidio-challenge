@@ -3,11 +3,21 @@ import mongoose from "mongoose";
 import express from "express";
 
 import { connectDB } from "./db/index.js";
-import {app} from "./app.js";
+import { app } from "./app.js";
+
+// routes import
+import { homeRoutes } from "./routes/home.routes.js";
+import { sellerPropertyRoutes } from "./routes/seller-property.routes.js";
+import { buyerPropertyRoutes } from "./routes/buyer-property.routes.js";
 
 dotenv.config({
     path: './.env'
 })
+
+// Routes
+app.use('/', homeRoutes)
+app.use('/api/seller/properties', sellerPropertyRoutes)
+app.use('/api/buyer/properties', buyerPropertyRoutes)
 
 connectDB()
     .then(() => {
