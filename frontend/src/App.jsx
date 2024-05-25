@@ -1,12 +1,11 @@
-import React from 'react'
-import RegisterPage from './Pages/RegisterPage'
-import LoginPage from './Pages/LoginPage'
-const App = () => {
+import React from 'react';
+import AddPropertyPage from './Pages/AddPropertyPage';
+function App() {
   return (
-    <>
-      <RegisterPage />
-    </>
-  )
+    <div className="App">
+      <AddPropertyPage />
+    </div>
+  );
 }
 
-export default App
+export default App;
