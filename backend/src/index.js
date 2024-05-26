@@ -9,6 +9,7 @@ import { app } from "./app.js";
 import { homeRoutes } from "./routes/home.routes.js";
 import { sellerPropertyRoutes } from "./routes/seller-property.routes.js";
 import { buyerPropertyRoutes } from "./routes/buyer-property.routes.js";
+import { userRoutes } from "./routes/user.routes.js";
 
 dotenv.config({
     path: './.env'
@@ -16,6 +17,7 @@ dotenv.config({
 
 // Routes
 app.use('/', homeRoutes)
+app.use('/api/user', userRoutes)
 app.use('/api/seller/properties', sellerPropertyRoutes)
 app.use('/api/buyer/properties', buyerPropertyRoutes)
 
