@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { loginUser } from '../../service/api';
+import { useNavigate } from 'react-router-dom'; 
 
 const LoginComponent = ({ loginConfig }) => {
+
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState(
         loginConfig.reduce((acc, field) => {
             acc[field.name] = '';
@@ -15,9 +22,37 @@ const LoginComponent = ({ loginConfig }) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData);
+
+        try {
+            const response = await loginUser(formData);
+            
+            if (response.token) {
+               
+                toast.success('Login successful!');
+                setFormData({
+                    email: '',
+                    password: ''
+                });
+
+               setTimeout(() => {
+                    if (response.user.role === 'buyer') {
+                        navigate('/buyer');
+                    } else {
+                        navigate('/seller');
+                    }
+                }, 2000);
+               
+
+
+            } else {
+                toast.error('Invalid credentials. Please try again.');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            toast.error('Login failed. Please try again.');
+        }
     };
 
     return (
@@ -50,8 +85,17 @@ const LoginComponent = ({ loginConfig }) => {
                             Login
                         </button>
                     </div>
+                    <div>
+                        <p className="text-sm text-center md:text-base">
+                            Don't have an account?{' '}
+                            <a href="/register" className="text-purple-700 hover:text-purple-800">
+                                Register
+                            </a>
+                        </p>
+                    </div>
                 </form>
             </div>
+            <ToastContainer />
         </div>
     );
 };
