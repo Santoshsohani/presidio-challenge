@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+// models/property.model.js
+import mongoose from 'mongoose';
 
 const propertySchema = new mongoose.Schema({
     city: {
@@ -13,7 +14,7 @@ const propertySchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    area:{
+    area: {
         type: Number,
         required: true
     },
@@ -34,7 +35,7 @@ const propertySchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    collegeseNearby: {
+    collegesNearby: {
         type: String,
         required: false
     },
@@ -56,13 +57,13 @@ const propertySchema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: false
+        ref: 'User',
+        required: true
     }
 }, {
     timestamps: true
-})
+});
 
-const Property = mongoose.model("Property", propertySchema);
+const Property = mongoose.model('Property', propertySchema);
 
-export { Property }
+export { Property };

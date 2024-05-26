@@ -11,15 +11,17 @@ export const addProperty = async (req, res) => {
     }
 }
 
-// Get all properties
-export const getProperties = async (req, res) => {
+
+// Get all properties with their respective sellers
+export const getPropertiesWithSellers = async (req, res) => {
     try {
-        const properties = await Property.find();
+        const properties = await Property.find().populate('owner');
         res.send(properties);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 }
+
 
 // Get property by id
 export const getPropertyById = async (req, res) => {

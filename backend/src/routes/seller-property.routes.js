@@ -1,9 +1,9 @@
 import express from "express";
-import { getPropertyById, getProperties, addProperty, updateProperty, deleteProperty } from "../controllers/seller-property.controller.js";
+import { getPropertyById, getPropertiesWithSellers, addProperty, updateProperty, deleteProperty } from "../controllers/seller-property.controller.js";
 
 const router = express.Router();
 
-router.get("/", getProperties);
+router.get("/", getPropertiesWithSellers);
 router.get("/:id", getPropertyById);
 router.post("/", addProperty);
 router.put("/:id", updateProperty);

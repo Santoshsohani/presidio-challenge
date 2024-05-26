@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-const AddPropertyComponent = ({ addPropertyConfig }) => {
+const AddPropertyComponent = ({ addPropertyConfig, ownerId }) => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState(
         addPropertyConfig.reduce((acc, field) => {
             acc[field.name] = field.type === 'file' ? null : '';
             return acc;
         }, {})
     );
-
-    console.log(formData);
 
     const handleChange = (e) => {
         const { name, type, files, value } = e.target;
@@ -18,21 +22,33 @@ const AddPropertyComponent = ({ addPropertyConfig }) => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formDataToSubmit = new FormData();
         Object.keys(formData).forEach(key => {
             formDataToSubmit.append(key, formData[key]);
         });
-        console.log(formDataToSubmit);
-        // Add your API call logic here to submit the form data
+
+        // Append owner ID to form data
+        formDataToSubmit.append('owner', ownerId);
+
+        try {
+            const response = await axios.post('http://localhost:8000/api/properties', formDataToSubmit);
+            if (response.status === 200) {
+                toast.success('Property added successfully');
+                setFormData({})
+                navigate('/seller');
+            }
+        } catch (error) {
+            toast.error('Failed to add property');
+        }
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
-                <h2 className="text-2xl font-semibold text-center md:text-3xl">Propertry Details</h2>
-                <p className="mb-6 text-sm text-center md:text-base">Fill in the details to add/edit a  property</p>
+                <h2 className="text-2xl font-semibold text-center md:text-3xl">Property Details</h2>
+                <p className="mb-6 text-sm text-center md:text-base">Fill in the details to add/edit a property</p>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {addPropertyConfig.map((field) => (
                         <div key={field.name}>
